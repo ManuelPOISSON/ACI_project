@@ -2,3 +2,4 @@
 
 ## Authors
 Manuel Poisson
+Stoyan Bivolarov
