@@ -4,4 +4,4 @@
 
 Manuel Poisson
 
-Stoyan Bivolarov
+Stoyan B.
