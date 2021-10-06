@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  python:
+    build:
+      context: .
+    restart: always
+    devices:
+      - "/dev/snd:/dev/snd"
