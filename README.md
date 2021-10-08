@@ -5,3 +5,5 @@
 Manuel Poisson
 
 Stoyan B.
+
+Volodia PAROL-GUARINO
