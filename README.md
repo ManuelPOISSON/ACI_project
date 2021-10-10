@@ -2,9 +2,8 @@
 
 ## Authors
 
-Manuel Poisson
-
-Stoyan B.
-
-Volodia PAROL-GUARINO
-Serv242
+- Manuel Poisson
+- Stoyan B.
+- Volodia PAROL-GUARINO
+- Serv242
+- PitouGames
