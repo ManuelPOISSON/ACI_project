@@ -8,11 +8,15 @@ import datetime
 
 def setup_database(cursor):
     try:
-        cursor.execute("CREATE TABLE rpi(rpi_id int, latitude float, longitude float,"
-                       "PRIMARY KEY (rpi_id))")
-        cursor.execute("CREATE TABLE noises_levels(rpi_id int, noise_level int, datetime DateTime,"
-                       "PRIMARY KEY (rpi_id, datetime),"
-                       "FOREIGN KEY (rpi_id) REFERENCES rpi(rpi_id))")
+        cursor.execute(
+            "CREATE TABLE rpi(rpi_id int, latitude float, longitude float,"
+            "PRIMARY KEY (rpi_id))"
+        )
+        cursor.execute(
+            "CREATE TABLE noises_levels(rpi_id int, noise_level int, datetime DateTime,"
+            "PRIMARY KEY (rpi_id, datetime),"
+            "FOREIGN KEY (rpi_id) REFERENCES rpi(rpi_id))"
+        )
 
     except mariadb.Error as e:
         print(f"Error: {e}")
@@ -39,10 +43,14 @@ def write_db(cursor):
     now = datetime.datetime.now()
     print("now is ", now)
     try:
-        cursor.execute("INSERT INTO rpi (rpi_id, latitude, longitude) VALUES (?, ?, ?)",
-                       ('3', '1.0', '-1.0'))
-        cursor.execute("INSERT INTO noises_levels (rpi_id, noise_level, datetime) VALUES (?, ?, ?)",
-                       ('3', '2', f'{now}'))
+        cursor.execute(
+            "INSERT INTO rpi (rpi_id, latitude, longitude) VALUES (?, ?, ?)",
+            ("3", "1.0", "-1.0"),
+        )
+        cursor.execute(
+            "INSERT INTO noises_levels (rpi_id, noise_level, datetime) VALUES (?, ?, ?)",
+            ("3", "2", f"{now}"),
+        )
     except mariadb.Error as e:
         print(f"Error: {e}")
 
@@ -67,7 +75,7 @@ if __name__ == "__main__":
         "password": "password",
         "host": "127.0.0.1",
         "database": "soundfog",
-        "port": 3306
+        "port": 3306,
     }
     conn, cur = connect(conn_params)
     # setup_database(cur)
