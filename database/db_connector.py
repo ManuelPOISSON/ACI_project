@@ -23,18 +23,18 @@ cur = conn.cursor()
 print("connection opened")
 
 # retrieving information
-rpi_id = 1
+rpi_id = 2
 cur.execute("SELECT latitude, longitude FROM rpi WHERE rpi_id=?", (rpi_id,))
 
 for latitude, longitude in cur:
     print(f"lat: {latitude}, long: {longitude}")
-
+exit(0)
 # insert information
 # example of correct request :
 # INSERT INTO `rpi` (`rpi_id`, `latitude`, `longitude`) VALUES ('2', '52.1168517', '2.6652337');
 try:
     # cur.execute("INSERT INTO employees (first_name,last_name) VALUES (?, ?)", ("Maria", "DB"))
-    cur.execute("INSERT INTO rpi ('rpi_id', 'latitude', 'longitude') VALUES (?, ?, ?)",
+    cur.execute("INSERT INTO rpi (rpi_id, latitude, longitude) VALUES (?, ?, ?)",
                 ('2', '52.2168517', '2.2652337'))
 except mariadb.Error as e:
     print(f"Error: {e}")
