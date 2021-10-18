@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  db:
+    image: mariadb:10.6.4
+    volumes:
+      - "./mysql:/var/lib/mysql"
+    environment:
+      MYSQL_DATABASE: soundfog
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MARIADB_ROOT_PASSWORD: password
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+    image: phpmyadmin:5.1
+    depends_on:
+      - db
+    environment:
+      #- PMA_ARBITRARY=1
+      - PMA_HOST=db
+      - PMA_USER=user
+      - PMA_PASSWORD=password
+    ports:
+      - 8080:80
