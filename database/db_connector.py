@@ -78,7 +78,7 @@ if __name__ == "__main__":
         "port": 3306,
     }
     conn, cur = connect(conn_params)
-    # setup_database(cur)
+    setup_database(cur)
     write_db(cur)
     read_db(cur)
     conn.close()
