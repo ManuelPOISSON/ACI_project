@@ -10,4 +10,4 @@ WORKDIR /pulsar-client
 COPY . .
 
 # Entrypoint is on bash
-ENTRYPOINT ["/bin/bash"]
+# ENTRYPOINT ["/bin/sh", "-c", "while sleep 1000; do :; done"]

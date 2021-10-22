@@ -1,0 +1,14 @@
+version: '3'
+networks:
+  pulsar:
+      name: test_pulsar
+      external: true
+
+services:
+  client:
+    image: apachepulsar/pulsar-test-latest-version:latest
+    command: /bin/bash -c 'sed -i "s/localhost/broker-beijing/g" /pulsar/conf/client.conf'
+    volumes:
+      - .:/workspace:cached
+    networks:
+      pulsar:
