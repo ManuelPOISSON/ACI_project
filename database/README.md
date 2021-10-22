@@ -1,6 +1,7 @@
-# database structure
+# Database structure
 
-## rpi table                           
+## rpi table
+
 | rpi_id | latitude | longitude |
 |--------|----------|-----------|
 | 1      | 34       | 54        |
@@ -8,6 +9,7 @@
 | 3      | 45       | 75        |
 
 ## noises_levels table
+
 | rpi_id | noise    | time      |
 |--------|----------|-----------|
 | 1      | 5        | 12        |
@@ -22,21 +24,23 @@
 | 2      | 4        | 15        |
 | 2      | 7        | 16        |
 
-it is a mariadb
 
-# install python requirements
+# Python scripts
+
+## Install python requirements (no docker)
+
 ```bash
 python3 -m venv name_of_env
 source name_of_env/bin/activate
 pip install -r requirements.txt  
 ```
 
-# Usage
+## Usage
+
 - lauch mariadb :
   - run `docker-compose up` or `sudo docker-compose up` if it didn't work
 - modify and read data base : 
   - run `python db_connector.py`
-
  
 
 ## usefull links : 
