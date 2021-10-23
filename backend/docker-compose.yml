@@ -10,8 +10,15 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: password
       MARIADB_ROOT_PASSWORD: password
+
+  api:
+    build:
+      context: .
+    restart: always
+    depends_on:
+      - db
     ports:
-      - 3306:3306
+      - 8000:8000
 
   phpmyadmin:
     image: phpmyadmin:5.1
