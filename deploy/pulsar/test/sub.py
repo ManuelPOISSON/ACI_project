@@ -1,6 +1,6 @@
 import pulsar
 
-client = pulsar.Client('pulsar://broker-beijing:6650')
+client = pulsar.Client('pulsar://pulsar-rennes:6650')
 
 consumer = client.subscribe('my-tenant/my-namespace/my-topic', 'my-subscription')
 

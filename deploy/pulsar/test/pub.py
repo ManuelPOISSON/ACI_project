@@ -1,6 +1,6 @@
 import pulsar
 
-client = pulsar.Client('pulsar://broker-beijing:6650')
+client = pulsar.Client('pulsar://pulsar-rennes:6650')
 
 producer = client.create_producer('persistent://my-tenant/my-namespace/my-topic')
 # producer = client.create_producer('my-topic')

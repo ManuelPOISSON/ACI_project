@@ -7,7 +7,6 @@ networks:
 services:
   client:
     image: apachepulsar/pulsar-test-latest-version:latest
-    command: /bin/bash -c 'sed -i "s/localhost/broker-beijing/g" /pulsar/conf/client.conf'
     volumes:
       - .:/workspace:cached
     networks:

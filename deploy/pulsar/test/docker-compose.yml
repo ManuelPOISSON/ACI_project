@@ -17,70 +17,73 @@
 # under the License.
 #
 
-version: '2.1'
+version: '3.1'
 networks:
   pulsar:
     driver: bridge
     
 services:
-  zk:
-    hostname: zk
+  zookeeper-rennes:
+    hostname: zookeeper-rennes
     image: apachepulsar/pulsar-test-latest-version:latest
     command: bin/run-local-zk.sh
     environment:
-      ZOOKEEPER_SERVERS: zk
+      ZOOKEEPER_SERVERS: zookeeper-rennes
     networks:
       pulsar:
 
-  init:
+  init-rennes:
     image: apachepulsar/pulsar-test-latest-version:latest
     command: bin/init-cluster.sh
     environment:
-      clusterName: test
-      zkServers: zk
-      configurationStore: zk:2181
-      pulsarNode: pulsar1
+      clusterName: cluster-rennes
+      zkServers: zookeeper-rennes
+      configurationStore: zookeeper-rennes:2181
+      pulsarNode: pulsar-rennes
     networks:
       pulsar:
 
-  bk1:
-    hostname: bk1
+  bookie-rennes-0:
+    hostname: bookie-rennes
     image: apachepulsar/pulsar-test-latest-version:latest
     command: bin/run-bookie.sh
     environment:
-      clusterName: test
-      zkServers: zk
+      clusterName: cluster-rennes
+      zkServers: zookeeper-rennes
+      diskUsageThreshold: '0.99'
     networks:
       pulsar:
 
-  bk2:
-    hostname: bk2
+  bookie-rennes-1:
+    hostname: bookie-rennes
     image: apachepulsar/pulsar-test-latest-version:latest
     command: bin/run-bookie.sh
     environment:
-      clusterName: test
-      zkServers: zk
+      clusterName: cluster-rennes
+      zkServers: zookeeper-rennes
+      diskUsageThreshold: '0.99'
     networks:
       pulsar:
 
-  bk3:
-    hostname: bk3
+  bookie-rennes-2:
+    hostname: bookie-rennes
     image: apachepulsar/pulsar-test-latest-version:latest
     command: bin/run-bookie.sh
     environment:
-      clusterName: test
-      zkServers: zk
+      clusterName: cluster-rennes
+      zkServers: zookeeper-rennes
+      diskUsageThreshold: '0.99'
     networks:
       pulsar:
 
-  pulsar1:
-    hostname: pulsar1
+  pulsar-rennes:
+    hostname: pulsar-rennes
     image: apachepulsar/pulsar-test-latest-version:latest
     command: bin/run-broker.sh
     environment:
-      clusterName: test
-      zookeeperServers: zk
-      configurationStoreServers: zk:2181
+      clusterName: cluster-rennes
+      zookeeperServers: zookeeper-rennes
+      configurationStoreServers: zookeeper-rennes:2181
     networks:
       pulsar:
 
