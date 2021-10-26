@@ -27,3 +27,19 @@ sed -i "s/localhost/pulsar-rennes/g" /pulsar/conf/client.conf
 /pulsar/bin/pulsar-client consume -s "sub-rennes" my-tenant/my-namespace/t1 -n 0
 /pulsar/bin/pulsar-client produce  my-tenant/my-namespace/t1  --messages "hello-from-rennes" -n 10
 ```
+/pulsar/bin/pulsar-client consume -s "sub-rennes" my-tenant/my-namespace/my-topic-excl -n 0
+
+# Functions 
+```sh
+pulsar/bin/pulsar-admin functions create \
+    --py sub.py \
+    --classname PublishFunction \
+    --inputs persistent://my-namespace/my-tenant/my-topic \
+    --output persistent://my-namespace/my-tenant/my-excla \
+    --name excla
+```
+
+```sh
+/pulsar/bin/pulsar-client consume -s "sub-rennes" my-tenant/my-namespace/my-excla -n 0
+/pulsar/bin/pulsar-client produce  my-tenant/my-namespace/my-topic  --messages "hello-from-rennes" -n 10
+```

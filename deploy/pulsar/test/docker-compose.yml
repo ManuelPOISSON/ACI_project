@@ -25,7 +25,8 @@ networks:
 services:
   zookeeper-rennes:
     hostname: zookeeper-rennes
-    image: apachepulsar/pulsar-test-latest-version:latest
+    # image: apachepulsar/pulsar-test-latest-version:latest
+    image: apachepulsar/pulsar
     command: bin/run-local-zk.sh
     environment:
       ZOOKEEPER_SERVERS: zookeeper-rennes
@@ -33,7 +34,8 @@ services:
       pulsar:
 
   init-rennes:
-    image: apachepulsar/pulsar-test-latest-version:latest
+    # image: apachepulsar/pulsar-test-latest-version:latest
+    image: apachepulsar/pulsar
     command: bin/init-cluster.sh
     environment:
       clusterName: cluster-rennes
@@ -45,7 +47,8 @@ services:
 
   bookie-rennes-0:
     hostname: bookie-rennes
-    image: apachepulsar/pulsar-test-latest-version:latest
+    # image: apachepulsar/pulsar-test-latest-version:latest
+    image: apachepulsar/pulsar
     command: bin/run-bookie.sh
     environment:
       clusterName: cluster-rennes
@@ -56,7 +59,8 @@ services:
 
   bookie-rennes-1:
     hostname: bookie-rennes
-    image: apachepulsar/pulsar-test-latest-version:latest
+    # image: apachepulsar/pulsar-test-latest-version:latest
+    image: apachepulsar/pulsar
     command: bin/run-bookie.sh
     environment:
       clusterName: cluster-rennes
@@ -67,7 +71,8 @@ services:
 
   bookie-rennes-2:
     hostname: bookie-rennes
-    image: apachepulsar/pulsar-test-latest-version:latest
+    # image: apachepulsar/pulsar-test-latest-version:latest
+    image: apachepulsar/pulsar
     command: bin/run-bookie.sh
     environment:
       clusterName: cluster-rennes
@@ -78,7 +83,8 @@ services:
 
   pulsar-rennes:
     hostname: pulsar-rennes
-    image: apachepulsar/pulsar-test-latest-version:latest
+    # image: apachepulsar/pulsar-test-latest-version:latest
+    image: apachepulsar/pulsar
     command: bin/run-broker.sh
     environment:
       clusterName: cluster-rennes
