@@ -22,3 +22,9 @@ This is similar to the fullstack [kafka docker-compose deployment](https://githu
     http://localhost:8080 - web service
     pulsar://localhost:6650 - pulsar service
   ```
+
+
+# Soures
+
+- https://github.com/rudh24/pulsar-stack-docker-compose
+- https://raw.githubusercontent.com/apache/pulsar/master/build/docker/Dockerfile
