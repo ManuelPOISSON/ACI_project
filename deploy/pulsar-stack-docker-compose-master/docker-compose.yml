@@ -30,8 +30,20 @@ services:
     networks:
       - pulsar
 
-  bookie:
-    hostname: bookie
+  bookie-cesson:
+    hostname: bookie-cesson
+    build: .
+    environment:
+      zookeeperServers: "zoo:2181"
+      clusterName: rennes
+    command: /scripts/start_bookie.sh
+    depends_on:
+      - init
+    networks:
+      - pulsar
+
+  bookie-saint-jacques:
+    hostname: bookie-saint-jacques
     build: .
     environment:
       zookeeperServers: "zoo:2181"
