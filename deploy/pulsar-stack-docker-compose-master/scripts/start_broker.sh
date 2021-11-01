@@ -1,3 +1,8 @@
 #!/bin/bash
-# bin/pulsar broker > logs/broker.log 2>&1
-bin/pulsar broker
+export PULSAR_BROKER_CONF=/conf/broker.conf
+
+# Apply the environment variables from the current shell to the zk configuration
+/pulsar/bin/apply-config-from-env.py $PULSAR_BROKER_CONF
+
+# Start the broker
+/pulsar/bin/pulsar broker
