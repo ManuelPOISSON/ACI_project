@@ -63,7 +63,8 @@ services:
       configurationStore: "zoo:2181"
     command: /scripts/start_broker.sh
     depends_on:
-      - bookie
+      - bookie-saint-jacques
+      - bookie-cesson
     networks:
       - pulsar
 
