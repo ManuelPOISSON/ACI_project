@@ -1,14 +1,18 @@
 version: '3.1'
 
+networks:
+  pulsar:
+    driver: bridge
+
 services:
   zoo:
     hostname: zoo
     build: .
-    ports:
-      - "2181:2181"
     environment:
       server.1: zoo:2888:3888
     command: /scripts/start_zk.sh
+    networks:
+      - pulsar
     
   init:
     hostname: init
@@ -18,30 +22,29 @@ services:
       zkServers: "zoo:2181"
       configurationStore: "zoo:2181"
       pulsarNode: broker
-      webServicePort: "8090"
-      brokerServicePort: "6660"
+      webServicePort: "8080"
+      brokerServicePort: "6650"
     command: /scripts/init_cluster.sh
     depends_on:
       - zoo
+    networks:
+      - pulsar
 
   bookie:
     hostname: bookie
     build: .
-    ports:
-      - "3181:3181"
     environment:
       zookeeperServers: "zoo:2181"
       clusterName: rennes
     command: /scripts/start_bookie.sh
     depends_on:
       - init
+    networks:
+      - pulsar
     
   broker:
     hostname: broker
     build: .
-    ports:
-      - "6660:6650"
-      - "8090:8080"
     environment:
       zookeeperServers: "zoo:2181"
       clusterName: rennes
@@ -49,6 +52,8 @@ services:
     command: /scripts/start_broker.sh
     depends_on:
       - bookie
+    networks:
+      - pulsar
 
   proxy:
     hostname: proxy
@@ -63,3 +68,5 @@ services:
     command: /scripts/start_proxy.sh
     depends_on:
       - broker
+    networks:
+      - pulsar
