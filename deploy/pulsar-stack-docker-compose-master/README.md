@@ -28,3 +28,4 @@ This is similar to the fullstack [kafka docker-compose deployment](https://githu
 
 - https://github.com/rudh24/pulsar-stack-docker-compose
 - https://raw.githubusercontent.com/apache/pulsar/master/build/docker/Dockerfile
+- https://www.stereolabs.com/docs/docker/building-arm-container-on-x86/
