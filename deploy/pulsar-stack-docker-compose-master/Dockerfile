@@ -4,3 +4,4 @@ COPY conf/ /conf
 COPY scripts/ /scripts
 
 RUN chmod u+x /scripts/*.sh
+RUN chmod u+x /conf/*.sh
