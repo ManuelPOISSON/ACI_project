@@ -10,6 +10,8 @@ services:
     build: .
     environment:
       server.1: zoo:2888:3888
+      JAVA_OPTS: "${JAVA_OPTS}"
+      _JAVA_OPTIONS: "${JAVA_OPTS}"
     command: /scripts/start_zk.sh
     networks:
       - pulsar
@@ -24,6 +26,8 @@ services:
       pulsarNode: broker
       webServicePort: "8080"
       brokerServicePort: "6650"
+      JAVA_OPTS: "${JAVA_OPTS}"
+      _JAVA_OPTIONS: "${JAVA_OPTS}"
     command: /scripts/init_cluster.sh
     depends_on:
       - zoo
@@ -36,6 +40,8 @@ services:
     environment:
       zookeeperServers: "zoo:2181"
       clusterName: rennes
+      JAVA_OPTS: "${JAVA_OPTS}"
+      _JAVA_OPTIONS: "${JAVA_OPTS}"
     command: /scripts/start_bookie.sh
     depends_on:
       - init
@@ -48,6 +54,8 @@ services:
     environment:
       zookeeperServers: "zoo:2181"
       clusterName: rennes
+      JAVA_OPTS: "${JAVA_OPTS}"
+      _JAVA_OPTIONS: "${JAVA_OPTS}"
     command: /scripts/start_bookie.sh
     depends_on:
       - init
@@ -61,6 +69,8 @@ services:
       zookeeperServers: "zoo:2181"
       clusterName: rennes
       configurationStore: "zoo:2181"
+      JAVA_OPTS: "${JAVA_OPTS}"
+      _JAVA_OPTIONS: "${JAVA_OPTS}"
     command: /scripts/start_broker.sh
     depends_on:
       - bookie-saint-jacques
@@ -78,6 +88,8 @@ services:
       zookeeperServers: "zoo:2181"
       clusterName: rennes
       configurationStore: "zoo:2181"
+      JAVA_OPTS: "${JAVA_OPTS}"
+      _JAVA_OPTIONS: "${JAVA_OPTS}"
     command: /scripts/start_proxy.sh
     depends_on:
       - broker
