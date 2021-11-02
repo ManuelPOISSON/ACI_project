@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   python:
@@ -7,8 +7,3 @@ services:
     restart: always
     devices:
       - "/dev/snd:/dev/snd"
-    privileged: true
-    security_opt:
-      - seccomp:unconfined 
-    cap_add: 
-      - SYS_ADMIN
