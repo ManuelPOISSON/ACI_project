@@ -63,3 +63,7 @@ PULSAR_EXTRA_OPTS=${PULSAR_EXTRA_OPTS:-" -Dpulsar.allocator.exit_on_oom=true -Di
 
 # Extra options to be passed to the jvm
 BOOKIE_EXTRA_OPTS="${BOOKIE_EXTRA_OPTS} -Dio.netty.leakDetectionLevel=disabled -Dio.netty.recycler.maxCapacity.default=1000 -Dio.netty.recycler.linkCapacity=1024"
+
+
+
+JAVA_OPTS="-Xms128m -Xmx256m"  
