@@ -67,7 +67,7 @@ def write_db(conn, cursor):
         )
         conn.commit()
     except mariadb.Error as e:
-        print(f"Error: {e}")
+        print(f"mariadb Error: {e}")
 
 
 def read_mean_values(cursor, start, end):
