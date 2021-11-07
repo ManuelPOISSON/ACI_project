@@ -100,6 +100,6 @@ while not terminate:
         post_noise_to_db(int(os.getenv("RASPBERRY_ID")), int(os.getenv("COORDINATES_ID")), noise_amplitudes)
         noise_amplitudes = []
 
-    time.sleep(1)
+    time.sleep(2)
 
 print("Bye")
