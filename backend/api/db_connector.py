@@ -1,3 +1,4 @@
+import random
 from typing import Dict, Union
 import mariadb
 import datetime
@@ -48,26 +49,78 @@ def connect(parameters: Dict[str, Union[str, int]]):
 
 
 # Write test data
-def write_db(conn, cursor):
-    # insert information
-    # examples of correct requests :
+def write_fake_noise_level(conn, cursor):
     now = datetime.datetime.now()
     try:
-        cursor.execute(
-            "INSERT INTO coordinates (id, latitude, longitude) VALUES (?, ?, ?)",
-            (1, 52.1168517, 2.6652337),
-        )
-        cursor.execute(
-            "INSERT INTO devices (id, current_coordinates) VALUES (?, ?)",
-            (1, 1),
-        )
-        cursor.execute(
-            "INSERT INTO noise_levels (datetime, device, coordinate, noise_level) VALUES (?, ?, ?, ?)",
-            (now, 1, 1, 0.45),
-        )
+        now_first_sec = datetime.datetime(now.year, now.month, now.day, 0, 0, 0)
+        for time_shift in range(0, 24):
+            time = now_first_sec + datetime.timedelta(hours=time_shift)
+
+            for device_id in range(5, 9):
+                cursor.execute(
+                    "INSERT INTO noise_levels (datetime, device, coordinate, noise_level) VALUES (?, ?, ?, ?)",
+                    (time, device_id, device_id, random.uniform(0, 0.05)*100),
+                )
         conn.commit()
     except mariadb.Error as e:
         print(f"mariadb Error: {e}")
+
+
+def write_fake_device(conn, cursor):
+    devices_data = (
+        (5, 48.1168517, -1.6652337),
+        (6, 48.0968517, -1.6452337),
+        (7, 48.1368517, -1.6952337),
+        (8, 48.1268517, -1.6052337)
+    )
+    try:
+
+        # insert coordinates
+        for coord in devices_data:
+            cursor.execute(
+                "INSERT INTO coordinates (id, latitude, longitude) VALUES (?, ?, ?)",
+                coord,
+            )
+        conn.commit()
+        # insert devices
+        for coord in devices_data:
+            cursor.execute(
+                "INSERT INTO devices (id, current_coordinates) VALUES (?, ?)",
+                (coord[0], coord[0]),
+            )
+        conn.commit()
+    except mariadb.Error as e:
+        print(f"mariadb write_fake_device Error: {e}")
+
+
+def delete_fake_data(conn, cursor):
+    try:
+        cursor.execute(
+            "DELETE FROM devices WHERE id >= 5"
+        )
+        conn.commit()
+        cursor.execute(
+            "DELETE FROM coordinates WHERE id >= 5"
+        )
+        conn.commit()
+        cursor.execute(
+            "DELETE FROM noise_levels WHERE device >= 5"
+        )
+        conn.commit()
+    except mariadb.Error as e:
+        print(f"mariadb delete_fake_device Error: {e}")
+
+
+def write_amplitude(conn, cursor, device_id: int, coordinate_id: int, noise_lvl: float):
+    now = datetime.datetime.now()
+    try:
+        cursor.execute(
+            "INSERT INTO noise_levels (datetime, device, coordinate, noise_level) VALUES (?, ?, ?, ?)",
+            (now, device_id, coordinate_id, noise_lvl),
+        )
+        conn.commit()
+    except mariadb.Error as e:
+        print(f"error while writing amplitude: {e}")
 
 
 def read_mean_values(cursor, start, end):
@@ -76,3 +129,26 @@ def read_mean_values(cursor, start, end):
         "GROUP BY coordinates.id",
         (start, end)
     )
+
+
+def print_bd(cursor):
+    cursor.execute(
+        "SELECT * FROM coordinates"
+    )
+    ret = "COORDINATES \n"
+    for data_tuple in cursor:
+        ret += str(data_tuple) + "\n"
+    cursor.execute(
+        "SELECT * FROM devices"
+    )
+    ret += "DEVICES \n"
+    for data_tuple in cursor:
+        ret += str(data_tuple) + "\n"
+    ret += "NOISE_LEVELS \n"
+    cursor.execute(
+        "SELECT * FROM noise_levels"
+    )
+    for data_tuple in cursor:
+        ret += str(data_tuple) + "\n"
+    print(ret)
+    return ret
