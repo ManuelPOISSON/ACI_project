@@ -4,6 +4,8 @@ import pyaudio
 import struct
 import math
 import signal
+import requests
+import os
 
 # We are going to measure the root mean square RMS Amplitude for the noise
 # The RMS is calculated by the square root of the average of the squares of the individual samples 
@@ -42,6 +44,14 @@ def get_rms(block):
     return rms
 
 
+def post_noise_to_db(rasp_id: int, coord_id: int, noise_level: float):
+    baseurl = "http://localhost:8000"
+    route = "/data"
+    response = requests.post(
+        f"{baseurl}{route}?raspberry_id={rasp_id}&location_id={coord_id}&noise_amplitude={noise_level}")
+    print(response.text)
+
+
 # Initiating pyaudio stream for the Microphone
 audio = pyaudio.PyAudio()
 
@@ -66,11 +76,12 @@ signal.signal(signal.SIGINT, signal_handling)
 # Start Listening
 while not terminate:
     # gathering data
-    block = stream.read(input_frames_per_block, exception_on_overflow=False)         
+    block = stream.read(input_frames_per_block, exception_on_overflow=False)
     amplitude = get_rms(block)
     print(amplitude)
-
-    # Send Post to a server, error handling 
+    time.sleep(1)
+    # Send Post to a server, error handling
+    post_noise_to_db(int(os.getenv("RASPBERRY_ID")), int(os.getenv("COORDINATES_ID")), amplitude * 80)
 
     if amplitude > threshold:  # if greater -> noise
         print("Noise", flush=True)

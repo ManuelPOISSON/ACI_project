@@ -7,3 +7,6 @@ services:
     restart: always
     devices:
       - "/dev/snd:/dev/snd"
+    environment:
+      - RASPBERRY_ID=1
+      - COORDINATES_ID=1
