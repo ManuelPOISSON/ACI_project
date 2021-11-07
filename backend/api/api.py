@@ -20,6 +20,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/")
 def read_root():
     return {"message": "SoundFog API"}
@@ -34,6 +35,45 @@ def read_map_data(start: Optional[datetime.datetime] = datetime.datetime.now() -
         res.append({"lat": latitude, "lng": longitude, "lvl": level})
     conn.close()
     return res
+
+
+@app.post("/data")
+def write_amplitude_in_db(raspberry_id: int, location_id: int, noise_amplitude: float):
+    print("parameters", raspberry_id, type(raspberry_id), noise_amplitude, type(noise_amplitude))
+    conn, cur = db_connector.connect(db_connector.connection_parameters)
+    db_connector.write_amplitude(conn, cur, raspberry_id, location_id, noise_amplitude)
+    return {
+        "rasp_id": raspberry_id,
+        "amplitude": noise_amplitude
+    }
+
+
+@app.get("/database")
+def print_database():
+    conn, cur = db_connector.connect(db_connector.connection_parameters)
+    dump = db_connector.print_bd(cur)
+
+    return {
+        "database": dump
+    }
+
+
+@app.get("/write_fake_device")
+def write_fake_device():
+    conn, cur = db_connector.connect(db_connector.connection_parameters)
+    db_connector.write_fake_device(conn, cur)
+
+
+@app.get("/write_fake_noise_level")
+def write_fake_noise_level():
+    conn, cur = db_connector.connect(db_connector.connection_parameters)
+    db_connector.write_fake_noise_level(conn, cur)
+
+
+@app.delete("/delete_fake")
+def delete_fake_data():
+    conn, cur = db_connector.connect(db_connector.connection_parameters)
+    db_connector.delete_fake_data(conn, cur)
 
 """
 # Add test data
