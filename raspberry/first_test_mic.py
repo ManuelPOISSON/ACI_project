@@ -2,8 +2,6 @@ import pyaudio
 import struct
 import math
 import signal
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 
 # We are going to measure the root mean square RMS Amplitude for the noise 
 # The RMS is calculated by the square root of the average of the squares of the individual samples 
@@ -18,21 +16,7 @@ input_block_time = 0.05 # we are going to read a block of samples at a time, let
 input_frames_per_block = int(samp_rate*input_block_time) 
 
 dev_index = 1 # device index found by p.get_device_info_by_index() (from the pyaudio library)
-app = FastAPI()
 
-origins = [
-    "http://localhost",
-    "http://localhost:8000",
-    "http://localhost:8080",
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 #p = pyaudio.PyAudio()
 #for i in range(p.get_device_count()):
@@ -54,13 +38,6 @@ def get_rms(block):
     rms = math.sqrt(ms)
     return rms
 
-@app.post("/")
-def send_amplitude_to_server(device_id: int, amplitude):
-    return {
-        "dev_id": device_id,
-        "amplitude": amplitude
-    }
-
 
 # Initiating pyaudio stream for the Microphone
 audio = pyaudio.PyAudio()
@@ -69,7 +46,7 @@ audio = pyaudio.PyAudio()
 stream = audio.open(format = format_audio, rate = samp_rate, channels = channel, input_device_index = dev_index, input = True, frames_per_buffer = input_frames_per_block)
 
 
-# Threshold - variable for noise detecting
+# Threshold - variable for noise detection
 threshold = 0.010 # just trying 
 
 # Manage Ctrl+C terminaison
