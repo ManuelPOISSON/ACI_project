@@ -40,10 +40,11 @@ def read_map_data(start: Optional[datetime.datetime] = datetime.datetime.now() -
 @app.post("/data")
 def write_amplitude_in_db(raspberry_id: int, location_id: int, noise_amplitudes: List[List[Union[Any, float]]]):
     # print("parameters", raspberry_id, type(raspberry_id), noise_amplitudes, type(noise_amplitudes))
+    conn, cur = db_connector.connect(db_connector.connection_parameters)
     for date, noise_ampl in noise_amplitudes:
         print("write ", noise_ampl)
-        conn, cur = db_connector.connect(db_connector.connection_parameters)
         db_connector.write_amplitude(conn, cur, date, raspberry_id, location_id, noise_ampl)
+    conn.close()
     return {
         "rasp_id": raspberry_id,
         "amplitudes": noise_amplitudes
