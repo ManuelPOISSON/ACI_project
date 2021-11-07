@@ -55,16 +55,20 @@ def format_data(noise_level_data) -> str:
 
 def post_noise_to_db(rasp_id: int, coord_id: int, noise_level: List[List[Union[Any, float]]]):
     data = format_data(noise_level)
-    baseurl = "http://localhost:8000"
+    baseurl = "http://192.168.1.58:8000"
     route = "/data"
-    response = requests.post(
-        f"{baseurl}{route}?raspberry_id={rasp_id}&location_id={coord_id}&noise_amplitude={noise_level}",
-        headers={
-            'Content-Type': 'application/json',
-            'accept': 'application/json'},
-        data=data
-    )
-    print(response.text)
+    try:
+        response = requests.post(
+            f"{baseurl}{route}?raspberry_id={rasp_id}&location_id={coord_id}&noise_amplitude={noise_level}",
+            headers={
+                'Content-Type': 'application/json',
+                'accept': 'application/json'},
+            data=data
+        )
+        print(response.text)
+    except Exception as e:
+        print(f"error when using POST: {e}")
+        print(f"data was {data}\nnoise_level was {noise_level}\n", "="*20)
 
 
 # Initiating pyaudio stream for the Microphone
