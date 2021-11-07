@@ -59,7 +59,7 @@ def post_noise_to_db(rasp_id: int, coord_id: int, noise_level: List[List[Union[A
     route = "/data"
     try:
         response = requests.post(
-            f"{baseurl}{route}?raspberry_id={rasp_id}&location_id={coord_id}&noise_amplitude={noise_level}",
+            f"{baseurl}{route}?raspberry_id={rasp_id}&location_id={coord_id}",
             headers={
                 'Content-Type': 'application/json',
                 'accept': 'application/json'},
