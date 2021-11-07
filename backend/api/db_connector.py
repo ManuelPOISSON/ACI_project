@@ -111,12 +111,11 @@ def delete_fake_data(conn, cursor):
         print(f"mariadb delete_fake_device Error: {e}")
 
 
-def write_amplitude(conn, cursor, device_id: int, coordinate_id: int, noise_lvl: float):
-    now = datetime.datetime.now()
+def write_amplitude(conn, cursor, date, device_id: int, coordinate_id: int, noise_lvl: float):
     try:
         cursor.execute(
             "INSERT INTO noise_levels (datetime, device, coordinate, noise_level) VALUES (?, ?, ?, ?)",
-            (now, device_id, coordinate_id, noise_lvl),
+            (date, device_id, coordinate_id, noise_lvl),
         )
         conn.commit()
     except mariadb.Error as e:

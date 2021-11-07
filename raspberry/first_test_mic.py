@@ -1,4 +1,6 @@
 import time
+from datetime import datetime
+from typing import List, Union, Any
 
 import pyaudio
 import struct
@@ -44,11 +46,24 @@ def get_rms(block):
     return rms
 
 
-def post_noise_to_db(rasp_id: int, coord_id: int, noise_level: float):
+def format_data(noise_level_data) -> str:
+    formatted_data = []
+    for date, noise_amplitude in noise_level_data:
+        formatted_data.append([date.strftime("%Y-%m-%d %H:%M:%S.%f"), noise_amplitude])
+    return str(formatted_data).replace("'", '"').replace(", ", ",")
+
+
+def post_noise_to_db(rasp_id: int, coord_id: int, noise_level: List[List[Union[Any, float]]]):
+    data = format_data(noise_level)
     baseurl = "http://localhost:8000"
     route = "/data"
     response = requests.post(
-        f"{baseurl}{route}?raspberry_id={rasp_id}&location_id={coord_id}&noise_amplitude={noise_level}")
+        f"{baseurl}{route}?raspberry_id={rasp_id}&location_id={coord_id}&noise_amplitude={noise_level}",
+        headers={
+            'Content-Type': 'application/json',
+            'accept': 'application/json'},
+        data=data
+    )
     print(response.text)
 
 
@@ -73,19 +88,18 @@ def signal_handling(signum, frame):
 
 signal.signal(signal.SIGINT, signal_handling)
 
+noise_amplitudes = []
 # Start Listening
 while not terminate:
     # gathering data
     block = stream.read(input_frames_per_block, exception_on_overflow=False)
     amplitude = get_rms(block)
-    print(amplitude)
-    time.sleep(1)
-    # Send Post to a server, error handling
-    post_noise_to_db(int(os.getenv("RASPBERRY_ID")), int(os.getenv("COORDINATES_ID")), amplitude * 80)
+    noise_amplitudes.append([datetime.now(), amplitude * 80])  # multiply by 80 to amplify variations
+    if len(noise_amplitudes) == 20:
+        # Send Post to a server
+        post_noise_to_db(int(os.getenv("RASPBERRY_ID")), int(os.getenv("COORDINATES_ID")), noise_amplitudes)
+        noise_amplitudes = []
 
-    if amplitude > threshold:  # if greater -> noise
-        print("Noise", flush=True)
-    else:  # Else, it's quite
-        print("Quite", flush=True)
+    time.sleep(1)
 
 print("Bye")

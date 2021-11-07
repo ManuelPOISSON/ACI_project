@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from typing import Optional
+from typing import Optional, List, Any, Union
 import datetime
 import db_connector
 
@@ -38,13 +38,15 @@ def read_map_data(start: Optional[datetime.datetime] = datetime.datetime.now() -
 
 
 @app.post("/data")
-def write_amplitude_in_db(raspberry_id: int, location_id: int, noise_amplitude: float):
-    print("parameters", raspberry_id, type(raspberry_id), noise_amplitude, type(noise_amplitude))
-    conn, cur = db_connector.connect(db_connector.connection_parameters)
-    db_connector.write_amplitude(conn, cur, raspberry_id, location_id, noise_amplitude)
+def write_amplitude_in_db(raspberry_id: int, location_id: int, noise_amplitudes: List[List[Union[Any, float]]]):
+    # print("parameters", raspberry_id, type(raspberry_id), noise_amplitudes, type(noise_amplitudes))
+    for date, noise_ampl in noise_amplitudes:
+        print("write ", noise_ampl)
+        conn, cur = db_connector.connect(db_connector.connection_parameters)
+        db_connector.write_amplitude(conn, cur, date, raspberry_id, location_id, noise_ampl)
     return {
         "rasp_id": raspberry_id,
-        "amplitude": noise_amplitude
+        "amplitudes": noise_amplitudes
     }
 
 
