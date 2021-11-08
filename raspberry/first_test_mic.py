@@ -55,7 +55,7 @@ def format_data(noise_level_data) -> str:
 
 def post_noise_to_db(rasp_id: int, coord_id: int, noise_level: List[List[Union[Any, float]]]):
     data = format_data(noise_level)
-    baseurl = "http://192.168.1.58:8000"
+    baseurl = f"http://{os.getenv('IP_SERVER')}:8000"
     route = "/data"
     try:
         response = requests.post(

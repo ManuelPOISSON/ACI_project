@@ -10,3 +10,4 @@ services:
     environment:
       - RASPBERRY_ID=1
       - COORDINATES_ID=1
+      - IP_SERVER=192.168.1.58
