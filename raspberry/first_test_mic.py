@@ -65,7 +65,7 @@ def post_noise_to_db(rasp_id: int, coord_id: int, noise_level: List[List[Union[A
                 'accept': 'application/json'},
             data=data
         )
-        print("send measurements to server")
+        print("measurements sent to server", flush=True)
         # print(response.text)
     except Exception as e:
         print(f"error when using POST: {e}")
@@ -100,9 +100,9 @@ while not terminate:
     block = stream.read(input_frames_per_block, exception_on_overflow=False)
     amplitude = get_rms(block)
     noise_amplitudes.append([datetime.now(), amplitude * 80])  # multiply by 80 to amplify variations
-    print(f"data mesured : \n")
+    print(f"data mesured : ", flush=True)
     for elem in noise_amplitudes:
-        print(elem)
+        print(elem, flush=True)
     print("="*30)
     if len(noise_amplitudes) == 20:
         # Send Post to a server
