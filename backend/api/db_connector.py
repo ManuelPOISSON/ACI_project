@@ -145,7 +145,7 @@ def print_bd(cursor):
         ret += str(data_tuple) + "\n"
     ret += "NOISE_LEVELS \n"
     cursor.execute(
-        "SELECT * FROM noise_levels"
+        "SELECT * FROM noise_levels ORDER BY datetime DESC LIMIT 40"
     )
     for data_tuple in cursor:
         ret += str(data_tuple) + "\n"

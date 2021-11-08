@@ -42,7 +42,7 @@ def write_amplitude_in_db(raspberry_id: int, location_id: int, noise_amplitudes:
     # print("parameters", raspberry_id, type(raspberry_id), noise_amplitudes, type(noise_amplitudes))
     conn, cur = db_connector.connect(db_connector.connection_parameters)
     for date, noise_ampl in noise_amplitudes:
-        print("write ", noise_ampl)
+        print("write to database : ", date, noise_ampl)
         db_connector.write_amplitude(conn, cur, date, raspberry_id, location_id, noise_ampl)
     conn.close()
     return {
