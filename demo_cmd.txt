@@ -1,0 +1,9 @@
+# write fake data
+curl -X 'GET' \
+  'http://localhost:8000/write_fake_noise_level' \
+  -H 'accept: application/json'
+
+# print database content
+curl -X 'GET' \
+  'http://localhost:8000/database' \
+  -H 'accept: application/json'
